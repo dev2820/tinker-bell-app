@@ -13,7 +13,7 @@ export default function HomeScreen() {
     <WebView
       style={styles.container}
       source={{
-        uri: "https://tinker-bell-4mff25oru-dev2820s-projects.vercel.app/",
+        uri: "https://tinker-bell-fe.vercel.app/",
       }}
     />
   );
