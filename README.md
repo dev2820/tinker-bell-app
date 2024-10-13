@@ -1,5 +1,14 @@
 # Welcome to your Expo app 👋
 
+## 빌드하는 방법
+
+빌드하는 방법
+
+```
+eas build -p android --profile preview
+```
+
+위 스크립트를 치고 기다린다.
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
 ## Get started
