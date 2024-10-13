@@ -4,8 +4,9 @@
 
 빌드하는 방법
 
-```
-eas build -p android --profile preview
+```shell
+eas build -p android --profile preview # android
+eas build -p ios --profile preview # iOS
 ```
 
 위 스크립트를 치고 기다린다.
