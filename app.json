@@ -2,7 +2,7 @@
   "expo": {
     "name": "ticketbell Todo",
     "description": "simplest todo application",
-    "slug": "ticket-bell-app",
+    "slug": "tinker-bell-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "tinkerbell.ticketbell.todo",
+      "bundleIdentifier": "com.ticketbell.todo",
       "buildNumber": "1"
     },
     "android": {
