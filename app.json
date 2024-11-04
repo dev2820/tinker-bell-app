@@ -16,14 +16,18 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ticketbell.todo",
-      "buildNumber": "1"
+      "buildNumber": "1",
+      "config": {
+        "usesAppleSignIn": false,
+        "usesPushNotifications": true
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "tinkerbell.ticketbell.todo"
+      "package": "com.ticketbell.todo"
     },
     "web": {
       "bundler": "metro",
