@@ -1,10 +1,6 @@
 import * as React from "react";
-import { Image, StyleSheet, Platform } from "react-native";
+import { StyleSheet } from "react-native";
 
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import { WebView } from "react-native-webview";
 import Constants from "expo-constants";
 
