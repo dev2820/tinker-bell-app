@@ -18,7 +18,7 @@
       "bundleIdentifier": "com.ticketbell.todo",
       "buildNumber": "1",
       "config": {
-        "usesAppleSignIn": false,
+        "usesAppleSignIn": true,
         "usesPushNotifications": true
       }
     },
