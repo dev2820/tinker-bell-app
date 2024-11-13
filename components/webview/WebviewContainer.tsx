@@ -4,9 +4,21 @@ import { StyleSheet, View, Text, AppState, AppStateStatus } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import Constants from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StackActions } from "@react-navigation/native";
+import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
 const COOKIE_STORAGE_KEY = "storedCookies";
 
-export default function HomeScreen() {
+type RootStackParamList = {
+  index: { url?: string };
+};
+
+export default function WebviewContainer({
+  navigation,
+  route,
+}: NativeStackScreenProps<RootStackParamList, "index">) {
+  const domain = "https://ticketbell.store";
+  const url = route.params?.url ?? domain;
+
   const [cookiesLoaded, setCookiesLoaded] = React.useState<string | null>(null);
   const webViewRef = React.useRef<WebView>(null);
   const [appState, setAppState] = React.useState<AppStateStatus>(
@@ -37,13 +49,29 @@ export default function HomeScreen() {
     return "";
   };
 
-  // WebView에서 쿠키를 가져와 저장
-  const handleMessage = (event: WebViewMessageEvent): void => {
-    const { data } = event.nativeEvent;
-    console.log(data);
-    if (data.startsWith("cookies:")) {
-      const cookies = data.replace("cookies:", "");
+  // webview에서 온 message에 대한 핸들링
+  const handleMessageFromWebview = (event: WebViewMessageEvent): void => {
+    const data = JSON.parse(event.nativeEvent.data);
+
+    // WebView에서 쿠키를 가져와 저장
+    if (data.type === "COOKIE") {
+      const cookies = data.cookies;
       saveCookies(cookies); // 쿠키 저장
+      return;
+    }
+
+    if (data.type === "ROUTER_EVENT") {
+      const path: string = data.path;
+      if (path === "back") {
+        const popAction = StackActions.pop(1);
+        navigation.dispatch(popAction);
+      } else {
+        const pushAction = StackActions.push("index", {
+          url: `${domain}${path}`,
+          isStack: true,
+        });
+        navigation.dispatch(pushAction);
+      }
     }
   };
 
@@ -64,7 +92,7 @@ export default function HomeScreen() {
 
   // WebView에서 쿠키를 얻기 위한 스크립트
   const getCookiesScript = `
-    window.ReactNativeWebView.postMessage('cookies:' + document.cookie);
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'COOKIE', cookies: document.cookie }));
     true;
   `;
 
@@ -101,10 +129,10 @@ export default function HomeScreen() {
           ref={webViewRef}
           style={styles.container}
           source={{
-            uri: "https://ticketbell.store/",
+            uri: url,
           }}
           injectedJavaScript={cookiesLoaded} // 쿠키 설정 스크립트 적용
-          onMessage={handleMessage} // 메시지 처리 (쿠키 저장)
+          onMessage={handleMessageFromWebview} // 메시지 처리 (쿠키 저장)
         />
       ) : (
         <Text>Webview Loading...</Text>
@@ -118,70 +146,3 @@ const styles = StyleSheet.create({
     marginTop: Constants.statusBarHeight,
   },
 });
-// return (
-//   <ParallaxScrollView
-//     headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-//     headerImage={
-//       <Image
-//         source={require("@/assets/images/emoji1.png")}
-//         style={styles.reactLogo}
-//       />
-//     }
-//   >
-
-//     <ThemedView style={styles.titleContainer}>
-//       <ThemedText type="title">Welcome!</ThemedText>
-//       <HelloWave />
-//     </ThemedView>
-//     <ThemedView style={styles.stepContainer}>
-//       <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-//       <ThemedText>
-//         Edit{" "}
-//         <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText>{" "}
-//         to see changes. Press{" "}
-//         <ThemedText type="defaultSemiBold">
-//           {Platform.select({ ios: "cmd + d", android: "cmd + m" })}
-//         </ThemedText>{" "}
-//         to open developer tools.
-//       </ThemedText>
-//     </ThemedView>
-//     <ThemedView style={styles.stepContainer}>
-//       <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-//       <ThemedText>
-//         Tap the Explore tab to learn more about what's included in this
-//         starter app.
-//       </ThemedText>
-//     </ThemedView>
-//     <ThemedView style={styles.stepContainer}>
-//       <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-//       <ThemedText>
-//         When you're ready, run{" "}
-//         <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText>{" "}
-//         to get a fresh <ThemedText type="defaultSemiBold">app</ThemedText>{" "}
-//         directory. This will move the current{" "}
-//         <ThemedText type="defaultSemiBold">app</ThemedText> to{" "}
-//         <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-//       </ThemedText>
-//     </ThemedView>
-//   </ParallaxScrollView>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   titleContainer: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     gap: 8,
-//   },
-//   stepContainer: {
-//     gap: 8,
-//     marginBottom: 8,
-//   },
-//   reactLogo: {
-//     height: 178,
-//     width: 290,
-//     bottom: 0,
-//     left: 0,
-//     position: "absolute",
-//   },
-// });
