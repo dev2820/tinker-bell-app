@@ -133,6 +133,9 @@ export default function WebviewContainer({
           }}
           injectedJavaScript={cookiesLoaded} // 쿠키 설정 스크립트 적용
           onMessage={handleMessageFromWebview} // 메시지 처리 (쿠키 저장)
+          cacheEnabled={true} // cache 활성화
+          cacheMode="LOAD_CACHE_ELSE_NETWORK"
+          androidLayerType="hardware"
         />
       ) : (
         <Text>Webview Loading...</Text>
