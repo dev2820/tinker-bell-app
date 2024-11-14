@@ -20,6 +20,9 @@
       "config": {
         "usesAppleSignIn": true,
         "usesPushNotifications": true
+      },
+      "entitlements": {
+        "com.apple.developer.applesignin": ["Default"]
       }
     },
     "android": {
