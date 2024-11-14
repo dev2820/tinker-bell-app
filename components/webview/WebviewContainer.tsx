@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackActions } from "@react-navigation/native";
 import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
 const COOKIE_STORAGE_KEY = "storedCookies";
+import WebviewLoading from "@/components/animations/WebviewLoading";
 
 type RootStackParamList = {
   index: { url?: string };
@@ -20,10 +21,15 @@ export default function WebviewContainer({
   const url = route.params?.url ?? domain;
 
   const [cookiesLoaded, setCookiesLoaded] = React.useState<string | null>(null);
+  const [isWebviewLoading, setIsWebviewLoading] = React.useState<boolean>(true);
   const webViewRef = React.useRef<WebView>(null);
   const [appState, setAppState] = React.useState<AppStateStatus>(
     AppState.currentState
   );
+
+  const isLoading = React.useMemo(() => {
+    return cookiesLoaded === null || isWebviewLoading;
+  }, [cookiesLoaded, isWebviewLoading]);
 
   // 쿠키 저장 함수
   const saveCookies = async (cookieString: string): Promise<void> => {
@@ -124,10 +130,15 @@ export default function WebviewContainer({
 
   return (
     <View style={{ flex: 1 }}>
-      {cookiesLoaded ? (
+      {isLoading && (
+        <View style={styles.loadingContainer}>
+          <WebviewLoading />
+        </View>
+      )}
+      {cookiesLoaded && (
         <WebView
           ref={webViewRef}
-          style={styles.container}
+          style={[styles.container, isLoading ? { display: "none" } : {}]}
           source={{
             uri: url,
           }}
@@ -136,9 +147,8 @@ export default function WebviewContainer({
           cacheEnabled={true} // cache 활성화
           cacheMode="LOAD_CACHE_ELSE_NETWORK"
           androidLayerType="hardware"
+          onLoad={() => setIsWebviewLoading(false)} // 웹뷰 로드 완료 시 로딩 상태 업데이트
         />
-      ) : (
-        <Text>Webview Loading...</Text>
       )}
     </View>
   );
@@ -147,5 +157,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: Constants.statusBarHeight,
+  },
+  loadingContainer: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "#fff", // 스플래시 화면 배경색 설정
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
