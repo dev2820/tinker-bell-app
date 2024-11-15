@@ -5,8 +5,9 @@
 빌드하는 방법
 
 ```shell
-eas build -p android --profile preview # android
-eas build -p ios --profile preview # iOS
+eas build -p android --profile preview # android APK
+eas build -p ios --profile preview # iOS APK
+eas build -p android # android ABB
 ```
 
 위 스크립트를 치고 기다린다.
