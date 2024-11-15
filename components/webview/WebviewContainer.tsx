@@ -8,6 +8,7 @@ import { StackActions } from "@react-navigation/native";
 import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
 const COOKIE_STORAGE_KEY = "storedCookies";
 import WebviewLoading from "@/components/animations/WebviewLoading";
+import Loading from "@/components/animations/Loading";
 
 type RootStackParamList = {
   index: { url?: string };
@@ -130,9 +131,14 @@ export default function WebviewContainer({
 
   return (
     <View style={{ flex: 1 }}>
-      {isLoading && (
+      {isLoading && url === domain && (
         <View style={styles.loadingContainer}>
           <WebviewLoading />
+        </View>
+      )}
+      {isLoading && url !== domain && (
+        <View style={styles.loadingContainer}>
+          <Loading />
         </View>
       )}
       {cookiesLoaded && (
