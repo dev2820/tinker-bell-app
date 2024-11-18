@@ -13,6 +13,14 @@ eas build -p android # android ABB
 위 스크립트를 치고 기다린다.
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+## iOS 제출
+
+```shell
+eas submit --platform ios
+```
+
+android가 apk를 올리는 방식과 달리 ios는 eas로 submit해야한다.
+
 ## Get started
 
 1. Install dependencies

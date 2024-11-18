@@ -16,7 +16,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ticketbell.todo",
-      "buildNumber": "1",
+      "buildNumber": "2",
       "config": {
         "usesAppleSignIn": true,
         "usesPushNotifications": true
