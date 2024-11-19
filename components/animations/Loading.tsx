@@ -8,7 +8,7 @@ const Loading = () => {
       style={{
         width: "100%",
         height: "100%",
-        backgroundColor: "#FF7F57",
+        backgroundColor: "#FFFFFF",
         justifyContent: "center",
         alignItems: "center",
       }}
