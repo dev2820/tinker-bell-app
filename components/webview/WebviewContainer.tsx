@@ -74,20 +74,8 @@ export default function WebviewContainer(props: Props) {
       } else if (path === "/setting") {
         router.push("/setting");
       } else if (path === "/") {
-        // tab간 전환
-        // const jumpToAction = TabActions.jumpTo("daily-view", {
-        //   url: `${domain}${path}`,
-        //   isStack: true,
-        // });
-        // navigation.dispatch(jumpToAction);
-        // navigation.navigate("tabs", {
-        //   url: `${domain}${path}`,
-        // });
         router.replace("/tabs/daily-todo");
       } else if (path === "/calendar") {
-        // navigation.navigate("tabs", {
-        //   url: `${domain}${path}`,
-        // });
         router.replace("/tabs/calendar-todo");
       } else if (path == "/experience") {
         router.push("/experience");
