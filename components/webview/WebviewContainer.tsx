@@ -1,13 +1,12 @@
 import * as React from "react";
-import { StyleSheet, View, Text, AppState, AppStateStatus } from "react-native";
+import { StyleSheet, View, AppState, AppStateStatus } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import Constants from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { StackActions, TabActions } from "@react-navigation/native";
 import WebviewLoading from "@/components/animations/WebviewLoading";
 import Loading from "@/components/animations/Loading";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { useRouter } from "expo-router";
 
 const COOKIE_STORAGE_KEY = "storedCookies";
@@ -18,6 +17,7 @@ type Props = {
 export default function WebviewContainer(props: Props) {
   const { url } = props;
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const domain = "https://ticketbell.store";
   // const url = route.params?.url ?? domain;
 
@@ -130,7 +130,6 @@ export default function WebviewContainer(props: Props) {
     };
   }, []);
 
-  console.log(145, url, domain);
   return (
     <View style={{ flex: 1 }}>
       {isLoading && url === domain && (
@@ -146,7 +145,11 @@ export default function WebviewContainer(props: Props) {
       {cookiesLoaded && (
         <WebView
           ref={webViewRef}
-          style={[styles.container, isLoading ? { display: "none" } : {}]}
+          style={[
+            styles.container,
+            { marginBottom: insets.bottom },
+            isLoading ? { display: "none" } : {},
+          ]}
           source={{
             uri: url,
           }}
