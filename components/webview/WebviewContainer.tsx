@@ -4,22 +4,22 @@ import { StyleSheet, View, Text, AppState, AppStateStatus } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import Constants from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { StackActions } from "@react-navigation/native";
-import { NativeStackScreenProps } from "react-native-screens/lib/typescript/native-stack/types";
-const COOKIE_STORAGE_KEY = "storedCookies";
+import { StackActions, TabActions } from "@react-navigation/native";
 import WebviewLoading from "@/components/animations/WebviewLoading";
 import Loading from "@/components/animations/Loading";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { useRouter } from "expo-router";
 
-type RootStackParamList = {
-  index: { url?: string };
+const COOKIE_STORAGE_KEY = "storedCookies";
+
+type Props = {
+  url: string;
 };
-
-export default function WebviewContainer({
-  navigation,
-  route,
-}: NativeStackScreenProps<RootStackParamList, "index">) {
+export default function WebviewContainer(props: Props) {
+  const { url } = props;
+  const router = useRouter();
   const domain = "https://ticketbell.store";
-  const url = route.params?.url ?? domain;
+  // const url = route.params?.url ?? domain;
 
   const [cookiesLoaded, setCookiesLoaded] = React.useState<string | null>(null);
   const [isWebviewLoading, setIsWebviewLoading] = React.useState<boolean>(true);
@@ -70,14 +70,27 @@ export default function WebviewContainer({
     if (data.type === "ROUTER_EVENT") {
       const path: string = data.path;
       if (path === "back") {
-        const popAction = StackActions.pop(1);
-        navigation.dispatch(popAction);
-      } else {
-        const pushAction = StackActions.push("index", {
-          url: `${domain}${path}`,
-          isStack: true,
-        });
-        navigation.dispatch(pushAction);
+        router.back();
+      } else if (path === "/setting") {
+        router.push("/setting");
+      } else if (path === "/") {
+        // tab간 전환
+        // const jumpToAction = TabActions.jumpTo("daily-view", {
+        //   url: `${domain}${path}`,
+        //   isStack: true,
+        // });
+        // navigation.dispatch(jumpToAction);
+        // navigation.navigate("tabs", {
+        //   url: `${domain}${path}`,
+        // });
+        router.replace("/tabs/daily-todo");
+      } else if (path === "/calendar") {
+        // navigation.navigate("tabs", {
+        //   url: `${domain}${path}`,
+        // });
+        router.replace("/tabs/calendar-todo");
+      } else if (path == "/experience") {
+        router.push("/experience");
       }
     }
   };
@@ -129,6 +142,7 @@ export default function WebviewContainer({
     };
   }, []);
 
+  console.log(145, url, domain);
   return (
     <View style={{ flex: 1 }}>
       {isLoading && url === domain && (
@@ -163,6 +177,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: Constants.statusBarHeight,
+    backgroundColor: "#fff",
   },
   loadingContainer: {
     ...StyleSheet.absoluteFillObject,
