@@ -1,1 +1,2 @@
-eas build -p android --profile preview
+eas build -p android
+eas build -p ios
