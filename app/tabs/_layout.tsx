@@ -4,7 +4,12 @@ export default function TabsLayout() {
   const pathname = usePathname();
   console.log("tabs layout", pathname);
   return (
-    <Tabs initialRouteName="index">
+    <Tabs
+      initialRouteName="index"
+      screenOptions={{
+        lazy: false,
+      }}
+    >
       <Tabs.Screen
         name="daily-todo"
         options={{
