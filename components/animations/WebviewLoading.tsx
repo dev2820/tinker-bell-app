@@ -15,7 +15,7 @@ const WebviewLoading = () => {
     >
       <LottieView
         source={require("@/assets/lotties/ticketbell.json")}
-        style={{ width: "80%", height: "80%" }}
+        style={{ width: "50%", height: "50%" }}
         autoPlay
         loop
       />

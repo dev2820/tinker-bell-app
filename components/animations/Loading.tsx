@@ -15,7 +15,7 @@ const Loading = () => {
     >
       <LottieView
         source={require("@/assets/lotties/loading.json")}
-        style={{ width: "80%", height: "80%" }}
+        style={{ width: "30%", height: "30%" }}
         autoPlay
         loop
       />
