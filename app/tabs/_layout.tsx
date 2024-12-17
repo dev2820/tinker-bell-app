@@ -18,14 +18,6 @@ export default function TabsLayout() {
           tabBarStyle: { display: "none" },
         }}
       />
-      <Tabs.Screen
-        name="calendar-todo"
-        options={{
-          title: "Calendar View",
-          headerShown: false,
-          tabBarStyle: { display: "none" },
-        }}
-      />
     </Tabs>
   );
 }
