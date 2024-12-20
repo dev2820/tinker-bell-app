@@ -75,8 +75,6 @@ export default function WebviewContainer(props: Props) {
         router.push("/setting");
       } else if (path === "/") {
         router.replace("/tabs/daily-todo");
-      } else if (path === "/calendar") {
-        router.replace("/tabs/calendar-todo");
       } else if (path == "/experience") {
         router.push("/experience");
       }
