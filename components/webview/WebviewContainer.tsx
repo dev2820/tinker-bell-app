@@ -157,6 +157,9 @@ export default function WebviewContainer(props: Props) {
           cacheMode="LOAD_CACHE_ELSE_NETWORK"
           androidLayerType="hardware"
           onLoad={() => setIsWebviewLoading(false)} // 웹뷰 로드 완료 시 로딩 상태 업데이트
+          overScrollMode="never" // android에서 스크롤 끝에 도달하면 튕기는 현상 제거
+          bounces={false}
+          decelerationRate="fast" // 스크롤이 빠르게 중단되지 않게 함
         />
       )}
     </View>
