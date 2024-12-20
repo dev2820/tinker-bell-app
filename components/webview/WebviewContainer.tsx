@@ -158,8 +158,9 @@ export default function WebviewContainer(props: Props) {
           androidLayerType="hardware"
           onLoad={() => setIsWebviewLoading(false)} // 웹뷰 로드 완료 시 로딩 상태 업데이트
           overScrollMode="never" // android에서 스크롤 끝에 도달하면 튕기는 현상 제거
-          bounces={false}
+          bounces={false} // ios에서 스크롤 끝에 도달하는 이펙트를 제거
           decelerationRate="fast" // 스크롤이 빠르게 중단되지 않게 함
+          textZoom={100} // 텍스트 크기를 100%로 고정
         />
       )}
     </View>
