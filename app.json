@@ -3,7 +3,7 @@
     "name": "Ticketbell",
     "description": "simplest todo application",
     "slug": "tinker-bell-app",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/images/ticketbell_icon_apple.png",
     "scheme": "myapp",
