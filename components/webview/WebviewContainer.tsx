@@ -1,5 +1,12 @@
 import * as React from "react";
-import { StyleSheet, View, AppState, AppStateStatus } from "react-native";
+import {
+  StyleSheet,
+  View,
+  AppState,
+  AppStateStatus,
+  BackHandler,
+  Alert,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { WebView, WebViewMessageEvent } from "react-native-webview";
@@ -27,6 +34,7 @@ export default function WebviewContainer(props: Props) {
   const [appState, setAppState] = React.useState<AppStateStatus>(
     AppState.currentState
   );
+  const [modalOpenStack, setModalOpenStack] = React.useState<number>(0);
 
   const isLoading = React.useMemo(() => {
     return cookiesLoaded === null || isWebviewLoading;
@@ -79,6 +87,13 @@ export default function WebviewContainer(props: Props) {
         router.push("/experience");
       }
     }
+
+    if (data.type === "OPEN_MODAL") {
+      setModalOpenStack(modalOpenStack + 1);
+    }
+    if (data.type === "CLOSE_MODAL") {
+      setModalOpenStack(modalOpenStack - 1);
+    }
   };
 
   // WebView에 쿠키를 설정하는 스크립트
@@ -127,6 +142,36 @@ export default function WebviewContainer(props: Props) {
       subscriber.remove();
     };
   }, []);
+
+  // 뒤로가기 실행시 동작 제어
+  const backAction = () => {
+    console.log("back", webViewRef.current);
+    if (webViewRef.current && modalOpenStack > 0) {
+      webViewRef.current.injectJavaScript(`
+          document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+        `);
+    } else {
+      Alert.alert("종료하시겠어요?", "확인을 누르면 종료합니다.", [
+        {
+          text: "취소",
+          onPress: () => {},
+          style: "cancel",
+        },
+        { text: "확인", onPress: () => BackHandler.exitApp() },
+      ]);
+    }
+    return true;
+  };
+
+  React.useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => {
+      backHandler.remove();
+    };
+  }, [webViewRef.current, modalOpenStack]);
 
   return (
     <View style={{ flex: 1 }}>
