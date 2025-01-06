@@ -34,7 +34,7 @@ export default function WebviewContainer(props: Props) {
   const [appState, setAppState] = React.useState<AppStateStatus>(
     AppState.currentState
   );
-  const [modalOpenStack, setModalOpenStack] = React.useState<number>(0);
+  const modalOpenStack = React.useRef<number>(0);
 
   const isLoading = React.useMemo(() => {
     return cookiesLoaded === null || isWebviewLoading;
@@ -88,10 +88,10 @@ export default function WebviewContainer(props: Props) {
     }
 
     if (data.type === "OPEN_MODAL") {
-      setModalOpenStack(modalOpenStack + 1);
+      modalOpenStack.current = modalOpenStack.current + 1;
     }
     if (data.type === "CLOSE_MODAL") {
-      setModalOpenStack(modalOpenStack - 1);
+      modalOpenStack.current = modalOpenStack.current - 1;
     }
   };
 
@@ -142,34 +142,30 @@ export default function WebviewContainer(props: Props) {
     };
   }, []);
 
-  // 뒤로가기 실행시 동작 제어
-  const backAction = () => {
-    if (webViewRef.current && modalOpenStack > 0) {
-      webViewRef.current.injectJavaScript(`
-          document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
-        `);
-    } else {
-      Alert.alert("종료하시겠어요?", "확인을 누르면 종료합니다.", [
-        {
-          text: "취소",
-          onPress: () => {},
-          style: "cancel",
-        },
-        { text: "확인", onPress: () => BackHandler.exitApp() },
-      ]);
-    }
-    return true;
-  };
-
   React.useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-    return () => {
-      backHandler.remove();
+    const backAction = () => {
+      if (webViewRef.current && modalOpenStack.current > 0) {
+        webViewRef.current.injectJavaScript(`
+            document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+          `);
+      } else {
+        Alert.alert("종료하시겠어요?", "확인을 누르면 종료합니다.", [
+          {
+            text: "취소",
+            onPress: () => {},
+            style: "cancel",
+          },
+          { text: "확인", onPress: () => BackHandler.exitApp() },
+        ]);
+      }
+      return true;
     };
-  }, [webViewRef.current, modalOpenStack]);
+    BackHandler.addEventListener("hardwareBackPress", backAction);
+
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", backAction);
+    };
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
