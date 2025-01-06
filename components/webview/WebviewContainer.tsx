@@ -55,7 +55,6 @@ export default function WebviewContainer(props: Props) {
     try {
       const savedCookies = await AsyncStorage.getItem(COOKIE_STORAGE_KEY);
       if (savedCookies) {
-        console.log("Cookies loaded:", savedCookies);
         return savedCookies;
       }
     } catch (error) {
@@ -145,7 +144,6 @@ export default function WebviewContainer(props: Props) {
 
   // 뒤로가기 실행시 동작 제어
   const backAction = () => {
-    console.log("back", webViewRef.current);
     if (webViewRef.current && modalOpenStack > 0) {
       webViewRef.current.injectJavaScript(`
           document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
