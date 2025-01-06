@@ -44,7 +44,6 @@ export default function WebviewContainer(props: Props) {
   const saveCookies = async (cookieString: string): Promise<void> => {
     try {
       await AsyncStorage.setItem(COOKIE_STORAGE_KEY, cookieString);
-      console.log("Cookies saved:", cookieString);
     } catch (error) {
       console.error("Failed to save cookies:", error);
     }

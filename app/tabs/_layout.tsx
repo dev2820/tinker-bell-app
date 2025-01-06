@@ -1,8 +1,6 @@
-import { Tabs, usePathname } from "expo-router";
+import { Tabs } from "expo-router";
 
 export default function TabsLayout() {
-  const pathname = usePathname();
-  console.log("tabs layout", pathname);
   return (
     <Tabs
       initialRouteName="index"
