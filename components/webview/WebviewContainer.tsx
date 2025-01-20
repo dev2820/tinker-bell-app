@@ -25,7 +25,7 @@ export default function WebviewContainer(props: Props) {
   const { url } = props;
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const domain = "https://ticketbell.store";
+  const domain = "https://www.ticketbell.store";
   // const url = route.params?.url ?? domain;
 
   const [cookiesLoaded, setCookiesLoaded] = React.useState<string | null>(null);
