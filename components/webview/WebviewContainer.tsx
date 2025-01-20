@@ -98,13 +98,7 @@ export default function WebviewContainer(props: Props) {
   const setCookiesScript = async (): Promise<string> => {
     const savedCookies = await loadCookies();
     if (savedCookies) {
-      const cookieArray = savedCookies
-        .split("; ")
-        .map((cookie) => {
-          return `document.cookie="${cookie}";`;
-        })
-        .join(" ");
-      return `${cookieArray}true;`;
+      return `document.cookie=${savedCookies}true;`;
     }
     return "true;";
   };
