@@ -3,7 +3,7 @@
     "name": "Ticketbell",
     "description": "simplest todo application",
     "slug": "tinker-bell-app",
-    "version": "1.0.5",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/images/ticketbell_icon_apple.png",
     "scheme": "myapp",
@@ -16,7 +16,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ticketbell.todo",
-      "buildNumber": "7",
+      "buildNumber": "8",
       "config": {
         "usesAppleSignIn": true,
         "usesPushNotifications": true
