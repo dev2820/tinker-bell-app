@@ -66,6 +66,13 @@ export default function WebviewContainer(props: Props) {
   const handleMessageFromWebview = (event: WebViewMessageEvent): void => {
     const data = JSON.parse(event.nativeEvent.data);
 
+    if (data.type === "CHANGE_THEME") {
+      const reloadScript = `
+        window.location.reload();
+        true;
+      `;
+      webViewRef.current?.injectJavaScript(reloadScript);
+    }
     // WebView에서 쿠키를 가져와 저장
     if (data.type === "COOKIE") {
       const cookies = data.cookies;
