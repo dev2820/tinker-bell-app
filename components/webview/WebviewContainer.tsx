@@ -84,14 +84,10 @@ export default function WebviewContainer(props: Props) {
       const path: string = data.path;
       if (path === "back") {
         router.back();
-      } else if (path === "/setting") {
-        router.push("/setting");
       } else if (path === "/") {
         router.replace("/tabs/daily-todo");
       } else if (path == "/experience") {
         router.push("/experience");
-      } else if (path == "/setting/category") {
-        router.push("/category");
       }
     }
 
